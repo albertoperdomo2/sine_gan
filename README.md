@@ -1,4 +1,4 @@
-# GAN for generating sin(x) data points from 0 to 2$\pi$.
+# GAN for generating sin(x) data points from 0 to 2pi.
 
 Generative Adversarial Networks are a form of neural network architecture in which a discriminator and a generator contest with each other in a game. The architecture learns to generate new data with the same probability distribution as the training set. 
 
