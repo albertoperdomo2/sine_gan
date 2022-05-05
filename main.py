@@ -1,5 +1,6 @@
 import torch
 from torch import nn
+from tqdm import tqdm
 
 import math
 import matplotlib.pyplot as plt
@@ -71,7 +72,8 @@ loss_function = nn.BCELoss() # binary cross entropy
 optimizer_discriminator = torch.optim.Adam(discriminator.parameters(), lr=learning_rate)
 optimizer_generator = torch.optim.Adam(generator.parameters(), lr=learning_rate)
 
-for epoch in range(epochs):
+for epoch in (pbar := tqdm(range(epochs))):
+    pbar.set_description(f"GAN training")
     for n, (real_samples, _) in enumerate(train_loader):
         # data for training the discriminator
         real_samples_labels = torch.ones((batch_size, 1))
@@ -99,9 +101,11 @@ for epoch in range(epochs):
         loss_generator.backward()
         optimizer_generator.step() 
 
+        pbar.set_postfix(loss_disc=loss_discriminator.item(), loss_gen=loss_generator.item())
+
         # debug loss
-        if n == batch_size -1:
-            print(f"Epoch: {epoch} Loss D.: {loss_discriminator} Loss G.: {loss_generator}")
+        # if n == batch_size -1:
+        #    print(f"Epoch: {epoch} Loss D.: {loss_discriminator} Loss G.: {loss_generator}")
         
     # debug with some plot
     generated_samples = generated_samples.detach()
